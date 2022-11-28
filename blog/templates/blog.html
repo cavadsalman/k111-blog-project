@@ -1,0 +1,88 @@
+{% extends 'layout/layout.html' %}
+{% load static %}
+
+{% block main %}
+    {% static 'assets/img/home-bg.jpg' as banner_image %}
+    {% include 'includes/banner.html' with title='Blog' description='All articles for read!' image=banner_image %}
+    <!-- Main Content-->
+    <div class="px-4 px-lg-5">
+        <div class="row">
+            <div class="col-3">
+                <div class="row">
+                    <div class="col">
+                        <h1>Authors</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <ul>
+                            <li><a href="{% url 'blog:blog-list' %}">Hamisi</a></li>
+                            {% for author in authors %}
+                                <li><a href="?author={{author.id}}">{{author.first_name}} - {{author.article_count}}</a></li>
+                            {% endfor %}
+                            <hr>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <form action="" class="row justify-content-center" method="GET">
+                    <div class="col">
+                        {{search_form.as_div}}
+                    </div>
+                    <button type="submit" class="col-2">Search</button>
+                </form>
+                <div class="row justify-content-center">
+                    <div class="col">
+                        {% for article in articles %}
+                            <!-- Post preview-->
+                            <div class="post-preview">
+                                <a href="{% url 'blog:blog-detail' id=article.id %}">
+                                    <h2 class="post-title">{{article.title}}</h2>
+                                    <h3 class="post-subtitle">{{article.description}}</h3>
+                                </a>
+                                <p class="post-meta">
+                                    Posted by
+                                    <a href="#!">{{article.author.name}}</a>
+                                    on {{article.created}}
+                                </p>
+                            </div>
+                            <!-- Divider-->
+                            <hr class="my-4" />
+                            <!-- Pager-->
+                        {% endfor %}
+                        <p>Article Count: {{total_article_count}}</p>
+                        <p>Ortalama: {{article_statistic.avg_view}}</p>
+                        <p>En az: {{article_statistic.min_view}} ({{less_view_article.title}})</p>
+                        <p>En Cox: {{article_statistic.max_view}} ({{max_view_article.title}})</p>
+                        <p>Total: {{article_statistic.total_view}}</p>
+
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                {% if page.has_previous %}
+                                    <li class="page-item"><a class="page-link" href="?page={{page.previous_page_number}}">Previous</a></li>
+                                {% else %}
+                                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                                {% endif %}
+                              {% for page_number in paginator.page_range %}
+                                {% if page.number == page_number %}
+                                    <li class="page-item active"><a class="page-link" href="?page={{page_number}}">{{page_number}}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{page_number}}">{{page_number}}</a></li>
+                                {% endif %}
+                              {% endfor %}
+                              {% if page.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{page.next_page_number}}">Next</a></li>
+                              {% else %}
+                                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                              {% endif %}
+                            </ul>
+                          </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3"></div>
+        </div>
+
+    </div>
+{% endblock main %}

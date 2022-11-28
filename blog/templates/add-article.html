@@ -1,0 +1,22 @@
+{% extends 'layout/layout.html' %}
+{% load static %}
+
+{% block main %}
+    {% static 'assets/img/home-bg.jpg' as banner_image %}
+    {% include 'includes/banner.html' with title='Blog' description='All articles for read!' image=banner_image %}
+    <!-- Main Content-->
+    <div class="container px-4 px-lg-5">
+        <div class="row">
+            <div class="col text-center">Add Article</div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form action="{% url 'blog:confirm-add-article' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form.as_div}}
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock main %}
