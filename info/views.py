@@ -21,3 +21,13 @@ def confirm_contact(request):
             form.save()
             return redirect('info:contact')
         return render(request, 'contact.html', context={'form': form})
+    
+    
+def example(request):
+
+    context = {
+        'fruits': ['alma', 'armud', 'heyva', 'nar', 'saftali', 'gilas', 'albali', 'alca'],
+        'star_value': 3.5
+    }
+    
+    return render(request, 'example.html', context=context)

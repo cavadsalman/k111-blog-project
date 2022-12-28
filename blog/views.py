@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Article
+from .models import Article, Review
 from .forms import ArticleForm, ArticleSearchForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -98,3 +98,9 @@ def confirm_delete_article(request, pk):
     article = get_object_or_404(Article, pk=pk)
     article.delete()
     return redirect('blog:blog-list')
+
+
+def review(request, pk, star_count):
+    article = get_object_or_404(Article, pk=pk)
+    Review.objects.create(article=article, star_count=star_count)
+    return redirect('blog:blog-detail', id=pk)

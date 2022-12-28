@@ -11,4 +11,5 @@ urlpatterns = [
     path('edit-article/<int:pk>/', views.edit_article, name='edit-article'),
     path('confirm-edit-article/<int:pk>/', views.confirm_edit_article, name='confirm-edit-article'),
     path('confirm-delete-article/<int:pk>/', views.confirm_delete_article, name='confirm-delete-article'),
+    path('review/<int:pk>/<int:star_count>/', views.review, name='review'),
 ]

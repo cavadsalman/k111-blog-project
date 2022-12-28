@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Article, ArticleImage
+from .models import Article, ArticleImage, Review
 # Register your models here.
-# admin.site.register(Author)
+admin.site.register(Review)
 
 class ArticleImageInline(admin.TabularInline):
     fields = ['image', 'image_tag', ]
@@ -33,7 +33,7 @@ class ArticleAdmin(admin.ModelAdmin):
     readonly_fields = ['created', 'updated', 'cover_image_tag', 'view_count']
     inlines = [ArticleImageInline]
 
-    list_display = ['title', 'author', 'visible', 'view_count',  'created']
+    list_display = ['title', 'author', 'visible', 'view_count', 'avg_stars',  'created']
     # list_editable = ['description']
     list_display_links = ['title', 'created']
     list_filter = ['author', 'created']

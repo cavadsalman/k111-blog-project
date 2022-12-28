@@ -1,8 +1,10 @@
 from django.db import models
+from django.db.models import Avg
 from django.urls import reverse
 from django.contrib.admin import display
 from django.utils.html import format_html
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
@@ -17,6 +19,13 @@ class Article(models.Model):
     updated = models.DateField(auto_now=True, verbose_name='Dəyişdirilmə Tarixi')
     created = models.DateField(auto_now_add=True, verbose_name='Yaradılma Tarixi')
     
+    def avg_stars(self):
+        # reviews =  self.review_set.all()
+        reviews = self.review_list.all()
+        if reviews.exists():
+            return reviews.aggregate(avg_stars=Avg('star_count')).get('avg_stars')
+        else:
+            return 0
     
     def __str__(self):
         return self.title
@@ -31,6 +40,14 @@ class Article(models.Model):
     class Meta:
         verbose_name = 'Məqalə'
         verbose_name_plural = 'Məqalələr'
+        
+        
+class Review(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='review_list')
+    star_count = models.IntegerField(validators=[MaxValueValidator(5), MinValueValidator(1)])
+    
+    def __str__(self):
+        return f'{self.article.title} - {self.star_count}'
     
 
 class ArticleImage(models.Model):

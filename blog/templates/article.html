@@ -1,5 +1,6 @@
 {% extends 'layout/layout.html' %}
 {% load static %}
+{% load exampletags %}
 
 {% block main %}
     <!-- Page Header-->
@@ -37,6 +38,14 @@
             <div class="row gx-4 gx-lg-5 justify-content-center mb-3">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     {{article.content}}
+                    <p>
+                        <a href="{% url 'blog:review' pk=article.pk star_count=1 %}"><i class="fa-solid fa-star"></i></a>
+                        <a href="{% url 'blog:review' pk=article.pk star_count=2 %}"><i class="fa-solid fa-star"></i></a>
+                        <a href="{% url 'blog:review' pk=article.pk star_count=3 %}"><i class="fa-solid fa-star"></i></a>
+                        <a href="{% url 'blog:review' pk=article.pk star_count=4 %}"><i class="fa-solid fa-star"></i></a>
+                        <a href="{% url 'blog:review' pk=article.pk star_count=5 %}"><i class="fa-solid fa-star"></i></a>
+                    </p>
+                    <p>Beyenilme: {% stars article.avg_stars %} ({{article.review_list.count}})</p>
                     <p>Baxildi: {{article.view_count}}</p>
                     <div>
                         <p>Other articles from author 
